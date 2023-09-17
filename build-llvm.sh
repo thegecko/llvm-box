@@ -65,6 +65,7 @@ if [ ! -d $LLVM_BUILD/ ]; then
     " emcmake cmake -G Ninja \
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
+        -DCMAKE_CXX_COMPILER=clang-16++ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DLLVM_TARGETS_TO_BUILD=ARM \
         -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
