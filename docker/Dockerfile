@@ -11,7 +11,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt --no-install-recommends -qy update && \
     autoconf \
     autoconf-archive \
     automake \
-    zlib1g-dev
+    zlib1g-dev \
+    build-essential
 
 # Add to PATH the clang version that ships with emsdk
 ENV PATH="${EMSDK}/upstream/bin:${PATH}"
