@@ -1,11 +1,10 @@
 #!/bin/bash
 
 SRC=$(dirname $0)
-SRC=$(realpath "$SRC")
 
 pushd $SRC/docker
 docker build \
-    -t emception_build \
+    -t llvm_build \
     .
 popd
 
@@ -18,5 +17,5 @@ docker run \
     -v $(pwd)/build/emsdk_cache:/emsdk/upstream/emscripten/cache \
     -u $(id -u):$(id -g) \
     $(id -G | tr ' ' '\n' | xargs -I{} echo --group-add {}) \
-    emception_build:latest \
+    llvm_build:latest \
     bash -c "cd $(pwd) && ./build.sh"
