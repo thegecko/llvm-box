@@ -24,8 +24,8 @@ jobs:
         with:
           name: wasm-package
           path: |
-            ./build/llvm/bin/*.wasm
-            ./build/llvm/bin/*.mjs
+            ./build/llvm/bin/llvm-box.wasm
+            ./build/llvm/bin/llvm-box.mjs
           retention-days: 7
 
   release:
