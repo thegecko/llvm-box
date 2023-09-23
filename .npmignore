@@ -1,0 +1,11 @@
+.github
+box_src
+build
+docker
+patches
+tooling
+upstream
+.gitignore
+*.sh
+node_modules
+yarn.lock
