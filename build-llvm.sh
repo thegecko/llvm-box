@@ -61,6 +61,7 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -s EXPORTED_FUNCTIONS=_main,_free,_malloc \
         -s EXPORTED_RUNTIME_METHODS=FS,PROXYFS,ERRNO_CODES,allocateUTF8 \
         -lproxyfs.js \
+        --js-library=$SRC/emlib/fsroot.js \
     " emcmake cmake -G Ninja \
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
