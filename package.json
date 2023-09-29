@@ -1,6 +1,6 @@
 {
   "name": "@thegecko/llvm-box",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Rob Moran <github@thegecko.org>",
   "license": "MIT",
   "main": "dist/llvm-box.mjs",
