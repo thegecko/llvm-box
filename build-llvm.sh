@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# https://github.com/jprendes/emception/blob/f6aa9eb24f69f46b7f3dcd58adad6cdf7e412d16/build-llvm.sh
 # MIT Licence, File has been modified.
 
 SRC=$(dirname $0)
@@ -60,9 +59,7 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -s ALLOW_MEMORY_GROWTH=1 \
         -s EXPORTED_FUNCTIONS=_main,_free,_malloc \
         -s EXPORTED_RUNTIME_METHODS=FS,PROXYFS,ERRNO_CODES,allocateUTF8 \
-        -lproxyfs.js \
-        --js-library=$SRC/emlib/fsroot.js \
-    " emcmake cmake -G Ninja \
+    " cmake -G Ninja \
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
