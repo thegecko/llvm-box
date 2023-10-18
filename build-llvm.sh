@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # MIT Licence, File has been modified.
-
+WASI_SDK_PATH=/wasi-sdk
 SRC=$(dirname $0)
 
 BUILD="$1"
