@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # MIT Licence, File has been modified.
-WASI_SDK_PATH=/wasi-sdk
 SRC=$(dirname $0)
 
 BUILD="$1"
@@ -42,14 +41,14 @@ fi
 # Cross compiling llvm needs a native build of "llvm-tblgen" and "clang-tblgen"
 if [ ! -d $LLVM_NATIVE/ ]; then
     cmake -G Ninja \
-        -DCMAKE_TOOLCHAIN_FILE=${WASI_SDK_PATH}/share/cmake/wasi-sdk-pthread.cmake \
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} \
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_NATIVE/ \
         -DCMAKE_BUILD_TYPE=Release \
         -DLLVM_TARGETS_TO_BUILD=ARM \
         -DLLVM_ENABLE_PROJECTS="clang"
 fi
-cmake -DCMAKE_TOOLCHAIN_FILE=${WASI_SDK_PATH}/share/cmake/wasi-sdk-pthread.cmake --build $LLVM_NATIVE/ -- llvm-tblgen clang-tblgen
+cmake -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} --build $LLVM_NATIVE/ -- llvm-tblgen clang-tblgen
 
 # Configure the main build, main point here is that the compiler targets the ARM platform,
 # Including ARM Embedded devices.
@@ -61,7 +60,7 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -s EXPORTED_FUNCTIONS=_main,_free,_malloc \
         -s EXPORTED_RUNTIME_METHODS=FS,PROXYFS,ERRNO_CODES,allocateUTF8 \
     " cmake -G Ninja \
-        -DCMAKE_TOOLCHAIN_FILE=${WASI_SDK_PATH}/share/cmake/wasi-sdk-pthread.cmake \
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} \
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
@@ -99,4 +98,4 @@ if [ ! -d $LLVM_BUILD/ ]; then
     cat $TMP_FILE >> $LLVM_BUILD/build.ninja
     popd
 fi
-cmake -DCMAKE_TOOLCHAIN_FILE=${WASI_SDK_PATH}/share/cmake/wasi-sdk-pthread.cmake --build $LLVM_BUILD/ -- llvm-box
+cmake -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} --build $LLVM_BUILD/ -- llvm-box
