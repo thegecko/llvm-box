@@ -41,14 +41,13 @@ fi
 # Cross compiling llvm needs a native build of "llvm-tblgen" and "clang-tblgen"
 if [ ! -d $LLVM_NATIVE/ ]; then
     cmake -G Ninja \
-        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} \
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_NATIVE/ \
         -DCMAKE_BUILD_TYPE=Release \
         -DLLVM_TARGETS_TO_BUILD=ARM \
         -DLLVM_ENABLE_PROJECTS="clang"
 fi
-cmake -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} --build $LLVM_NATIVE/ -- llvm-tblgen clang-tblgen
+cmake --build $LLVM_NATIVE/ -- llvm-tblgen clang-tblgen
 
 # Configure the main build, main point here is that the compiler targets the ARM platform,
 # Including ARM Embedded devices.
@@ -98,4 +97,4 @@ if [ ! -d $LLVM_BUILD/ ]; then
     cat $TMP_FILE >> $LLVM_BUILD/build.ninja
     popd
 fi
-cmake -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} --build $LLVM_BUILD/ -- llvm-box
+cmake --build $LLVM_BUILD/ -- llvm-box
