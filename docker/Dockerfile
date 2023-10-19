@@ -1,4 +1,8 @@
+FROM ghcr.io/webassembly/wasi-sdk:main as wasi
+
 FROM ubuntu:jammy
+
+ENV LLVM_VERSION 17
 
 RUN echo "## Update and install packages" \
     && apt-get -qq -y update \
@@ -15,6 +19,7 @@ RUN echo "## Update and install packages" \
         curl \
         zip \
         unzip \
+        gnupg \
         git \
         git-lfs \
         ssh-client \
@@ -31,17 +36,34 @@ RUN echo "## Update and install packages" \
         autoconf \
         autoconf-archive \
         automake \
-        zlib1g-dev \
-    # Standard Cleanup on Debian images
-    && apt-get -y clean \
-    && apt-get -y autoclean \
-    && apt-get -y autoremove \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/cache/debconf/*-old \
-    && rm -rf /usr/share/doc/* \
-    && rm -rf /usr/share/man/?? \
-    && rm -rf /usr/share/man/??_* \
-    && echo "## Done"
+        zlib1g-dev && \
+\
+    curl -sS https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor > /etc/apt/trusted.gpg.d/llvm.gpg && \
+    echo "deb [signed-by=/etc/apt/trusted.gpg.d/llvm.gpg] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-${LLVM_VERSION} main" >> /etc/apt/sources.list.d/llvm.list && \
+    echo "deb-src [signed-by=/etc/apt/trusted.gpg.d/llvm.gpg] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-${LLVM_VERSION} main" >> /etc/apt/sources.list.d/llvm.list && \
+\
+    apt-get update && \
+    apt-get install -y clang-${LLVM_VERSION} lld-${LLVM_VERSION} cmake ninja-build make autoconf autogen automake libtool && \
+    apt-get remove -y curl gnupg && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY --from=wasi /wasi-sysroot/ /wasi-sysroot/
+COPY --from=wasi /usr/lib/llvm-${LLVM_VERSION}/lib/clang/${LLVM_VERSION}/lib/wasi /usr/lib/llvm-${LLVM_VERSION}/lib/clang/${LLVM_VERSION}/lib/wasi
+
+ADD docker/wasi-sdk.cmake /usr/share/cmake/wasi-sdk.cmake
+ADD docker/wasi-sdk-pthread.cmake /usr/share/cmake/wasi-sdk-pthread.cmake
+ENV CMAKE_TOOLCHAIN_FILE /usr/share/cmake/wasi-sdk.cmake
+ADD cmake/Platform/WASI.cmake /usr/share/cmake/Modules/Platform/WASI.cmake
+
+ENV CC clang-${LLVM_VERSION}
+ENV CXX clang++-${LLVM_VERSION}
+ENV LD wasm-ld-${LLVM_VERSION}
+ENV AR llvm-ar-${LLVM_VERSION}
+ENV RANLIB llvm-ranlib-${LLVM_VERSION}
+
+ENV CFLAGS --target=wasm32-wasi --sysroot=/wasi-sysroot
+ENV CXXFLAGS --target=wasm32-wasi --sysroot=/wasi-sysroot
+ENV LDFLAGS --target=wasm32-wasi --sysroot=/wasi-sysroot
 
 # ------------------------------------------------------------------------------
 # Use commonly used /src as working directory

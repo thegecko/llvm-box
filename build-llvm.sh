@@ -62,7 +62,8 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -s EXPORTED_RUNTIME_METHODS=FS,PROXYFS,ERRNO_CODES,allocateUTF8 \
         -lproxyfs.js \
         --js-library=$SRC/emlib/fsroot.js \
-    " emcmake cmake -G Ninja \
+    " cmake -G Ninja \
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} \
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
