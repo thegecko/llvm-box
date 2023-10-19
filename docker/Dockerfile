@@ -50,10 +50,11 @@ RUN echo "## Update and install packages" \
 COPY --from=wasi /wasi-sysroot/ /wasi-sysroot/
 COPY --from=wasi /usr/lib/llvm-${LLVM_VERSION}/lib/clang/${LLVM_VERSION}/lib/wasi /usr/lib/llvm-${LLVM_VERSION}/lib/clang/${LLVM_VERSION}/lib/wasi
 
-ADD docker/wasi-sdk.cmake /usr/share/cmake/wasi-sdk.cmake
-ADD docker/wasi-sdk-pthread.cmake /usr/share/cmake/wasi-sdk-pthread.cmake
+COPY --from=wasi /usr/share/cmake/wasi-sdk.cmake /usr/share/cmake/wasi-sdk.cmake
+COPY --from=wasi /usr/share/cmake/wasi-sdk-pthread.cmake /usr/share/cmake/wasi-sdk-pthread.cmake
+COPY --from=wasi /usr/share/cmake/Modules/Platform/WASI.cmake /usr/share/cmake/Modules/Platform/WASI.cmake
+
 ENV CMAKE_TOOLCHAIN_FILE /usr/share/cmake/wasi-sdk.cmake
-ADD cmake/Platform/WASI.cmake /usr/share/cmake/Modules/Platform/WASI.cmake
 
 ENV CC clang-${LLVM_VERSION}
 ENV CXX clang++-${LLVM_VERSION}
