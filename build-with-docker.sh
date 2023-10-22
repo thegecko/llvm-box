@@ -29,5 +29,5 @@ docker run \
     -v $(pwd):$(pwd) \
     -u $(id -u):$(id -g) \
     $(id -G | tr ' ' '\n' | xargs -I{} echo --group-add {}) \
-    wasm_build:latest \
+    ghcr.io/webassembly/wasi-sdk:main \
     bash -c "cd $(pwd) && ./build-wasm.sh"
