@@ -25,7 +25,7 @@ if [ ! -d $LLVM_BUILD/ ]; then
     cmake -G Ninja \
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
-        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} \
+        -DCMAKE_TOOLCHAIN_FILE=${WASI_SDK_PATH}/share/cmake/wasi-sdk-pthread.cmake \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DLLVM_TARGETS_TO_BUILD=ARM \
         -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
@@ -61,4 +61,4 @@ if [ ! -d $LLVM_BUILD/ ]; then
     cat $TMP_FILE >> $LLVM_BUILD/build.ninja
     popd
 fi
-cmake -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} --build $LLVM_BUILD/ -- llvm-box
+cmake -DCMAKE_TOOLCHAIN_FILE=${WASI_SDK_PATH}/share/cmake/wasi-sdk-pthread.cmake --build $LLVM_BUILD/ -- llvm-box
