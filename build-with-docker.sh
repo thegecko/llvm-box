@@ -2,20 +2,32 @@
 
 SRC=$(dirname $0)
 
-pushd $SRC/docker
+pushd $SRC/docker-native
 docker build \
-    -t llvm_build \
+    -t native_build \
     .
 popd
 
-mkdir -p $(pwd)/build/emsdk_cache
+pushd $SRC/docker-wasm
+docker build \
+    -t wasm_build \
+    .
+popd
 
 docker run \
     -i --rm \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(pwd):$(pwd) \
-    -v $(pwd)/build/emsdk_cache:/emsdk/upstream/emscripten/cache \
     -u $(id -u):$(id -g) \
     $(id -G | tr ' ' '\n' | xargs -I{} echo --group-add {}) \
-    llvm_build:latest \
-    bash -c "cd $(pwd) && ./build.sh"
+    native_build:latest \
+    bash -c "cd $(pwd) && ./build-native.sh"
+
+docker run \
+    -i --rm \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v $(pwd):$(pwd) \
+    -u $(id -u):$(id -g) \
+    $(id -G | tr ' ' '\n' | xargs -I{} echo --group-add {}) \
+    wasm_build:latest \
+    bash -c "cd $(pwd) && ./build-wasm.sh"
