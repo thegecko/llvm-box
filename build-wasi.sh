@@ -22,16 +22,10 @@ LLVM_NATIVE=$BUILD/llvm-native
 # Including ARM Embedded devices.
 if [ ! -d $LLVM_BUILD/ ]; then
     CXXFLAGS="-Dwait4=__syscall_wait4" \
-    LDFLAGS="\
-        -s LLD_REPORT_UNDEFINED=1 \
-        -s ALLOW_MEMORY_GROWTH=1 \
-        -s EXPORTED_FUNCTIONS=_main,_free,_malloc \
-        -s EXPORTED_RUNTIME_METHODS=FS,PROXYFS,ERRNO_CODES,allocateUTF8 \
-        -lproxyfs.js \
-    " cmake -G Ninja \
-        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} \
+    cmake -G Ninja \
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DLLVM_TARGETS_TO_BUILD=ARM \
         -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
