@@ -24,6 +24,7 @@ if [ ! -d $LLVM_BUILD/ ]; then
     CXXFLAGS="-Dwait4=__syscall_wait4" \
     cmake -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
+        -triple=wasm32-wasi-threads \
         -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DLLVM_TARGETS_TO_BUILD=ARM \
