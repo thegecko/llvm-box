@@ -8,9 +8,9 @@ docker build \
     .
 popd
 
-pushd $SRC/docker-wasm
+pushd $SRC/docker-wasi
 docker build \
-    -t wasm_build \
+    -t wasi_build \
     .
 popd
 
@@ -29,5 +29,5 @@ docker run \
     -v $(pwd):$(pwd) \
     -u $(id -u):$(id -g) \
     $(id -G | tr ' ' '\n' | xargs -I{} echo --group-add {}) \
-    wasm_build:latest \
+    wasi_build:latest \
     bash -c "cd $(pwd) && ./build-wasi.sh"
