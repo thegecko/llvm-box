@@ -22,11 +22,15 @@ LLVM_NATIVE=$BUILD/llvm-native
 # Including ARM Embedded devices.
 if [ ! -d $LLVM_BUILD/ ]; then
     CXXFLAGS="-Dwait4=__syscall_wait4" \
-    cmake -S $LLVM_SRC/llvm/ \
+    cmake -G Ninja \
+        -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
-        -DCLANG_TARGET_TRIPLE=wasm32-wasi-threads \
-        -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
+        -DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE \
+        -DCMAKE_SYSTEM_NAME=WASI \
+        -DCMAKE_SYSTEM_VERSION=1 \
+        -DCMAKE_SYSTEM_PROCESSOR=wasm32 \
+        -DLLVM_HOST_TRIPLE=wasm32-wasi \
         -DLLVM_TARGETS_TO_BUILD=ARM \
         -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
         -DLLVM_ENABLE_DUMP=OFF \
@@ -42,23 +46,23 @@ if [ ! -d $LLVM_BUILD/ ]; then
 
     # Make sure we build js modules (.mjs).
     # The patch-ninja.sh script assumes that.
-    #sed -i -E 's/\.js/.mjs/g' $LLVM_BUILD/build.ninja
+    sed -i -E 's/\.js/.mjs/g' $LLVM_BUILD/build.ninja
 
     # The mjs patching is over zealous, and patches some source JS files rather than just output files.
     # Undo that.
-    #sed -i -E 's/(pre|post|proxyfs|fsroot)\.mjs/\1.js/g' $LLVM_BUILD/build.ninja
+    sed -i -E 's/(pre|post|proxyfs|fsroot)\.mjs/\1.js/g' $LLVM_BUILD/build.ninja
 
     # Patch the build script to add the "llvm-box" target.
     # This new target bundles many executables in one, reducing the total size.
-    # pushd $SRC
-    #TMP_FILE=$(mktemp)
-    #./patch-ninja.sh \
-    #    $LLVM_BUILD/build.ninja \
-    #    llvm-box \
-    #    $BUILD/tooling \
-    #    clang lld llvm-objcopy \
-    #    > $TMP_FILE
-    #cat $TMP_FILE >> $LLVM_BUILD/build.ninja
-    #popd
+    pushd $SRC
+    TMP_FILE=$(mktemp)
+    ./patch-ninja.sh \
+        $LLVM_BUILD/build.ninja \
+        llvm-box \
+        $BUILD/tooling \
+        clang lld llvm-objcopy \
+        > $TMP_FILE
+    cat $TMP_FILE >> $LLVM_BUILD/build.ninja
+    popd
 fi
 cmake --build $LLVM_BUILD/ -- llvm-box
