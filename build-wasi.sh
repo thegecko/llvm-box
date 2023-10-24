@@ -26,11 +26,6 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
-        -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake \
-        -DCMAKE_SYSTEM_NAME=Generic \
-        -DCMAKE_SYSTEM_VERSION=1 \
-        -DCMAKE_SYSTEM_PROCESSOR=wasm32 \
-        -DLLVM_HOST_TRIPLE=wasm32-wasi-threads \
         -DLLVM_TARGETS_TO_BUILD=ARM \
         -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
         -DLLVM_ENABLE_DUMP=OFF \
@@ -42,7 +37,8 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -DLLVM_BUILD_LLVM_DYLIB=OFF \
         -DLLVM_INCLUDE_TESTS=OFF \
         -DLLVM_TABLEGEN=$LLVM_NATIVE/bin/llvm-tblgen \
-        -DCLANG_TABLEGEN=$LLVM_NATIVE/bin/clang-tblgen
+        -DCLANG_TABLEGEN=$LLVM_NATIVE/bin/clang-tblgen \
+        -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake
 
     # Make sure we build js modules (.mjs).
     # The patch-ninja.sh script assumes that.
