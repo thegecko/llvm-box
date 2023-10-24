@@ -27,7 +27,7 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -B $LLVM_BUILD/ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake \
-        -DCMAKE_SYSTEM_NAME=Wasi \
+        -DCMAKE_SYSTEM_NAME=Generic \
         -DCMAKE_SYSTEM_VERSION=1 \
         -DCMAKE_SYSTEM_PROCESSOR=wasm32 \
         -DLLVM_HOST_TRIPLE=wasm32-wasi-threads \
