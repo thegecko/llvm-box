@@ -26,11 +26,11 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
-        -DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE \
+        -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake \
         -DCMAKE_SYSTEM_NAME=WASI \
         -DCMAKE_SYSTEM_VERSION=1 \
         -DCMAKE_SYSTEM_PROCESSOR=wasm32 \
-        -DLLVM_HOST_TRIPLE=wasm32-wasi \
+        -DLLVM_HOST_TRIPLE=wasm32-wasi-threads \
         -DLLVM_TARGETS_TO_BUILD=ARM \
         -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
         -DLLVM_ENABLE_DUMP=OFF \
