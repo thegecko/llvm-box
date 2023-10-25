@@ -41,7 +41,6 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -DCLANG_TABLEGEN=$LLVM_NATIVE/bin/clang-tblgen \
         -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake
 
-    echo "done"
     # Make sure we build js modules (.mjs).
     # The patch-ninja.sh script assumes that.
     sed -i -E 's/\.js/.mjs/g' $LLVM_BUILD/build.ninja
