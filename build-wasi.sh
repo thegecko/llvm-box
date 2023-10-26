@@ -20,7 +20,7 @@ LLVM_NATIVE=$BUILD/llvm-native
 
 # Configure the main build, main point here is that the compiler targets the ARM platform,
 # Including ARM Embedded devices.
-if [ ! -d $LLVM_BUILD/ ]; then
+#if [ ! -d $LLVM_BUILD/ ]; then
     CXXFLAGS="-Dwait4=__syscall_wait4" \
     cmake -G Ninja \
         -S $LLVM_SRC/llvm/ \
@@ -43,23 +43,24 @@ if [ ! -d $LLVM_BUILD/ ]; then
 
     # Make sure we build js modules (.mjs).
     # The patch-ninja.sh script assumes that.
-    sed -i -E 's/\.js/.mjs/g' $LLVM_BUILD/build.ninja
+    #sed -i -E 's/\.js/.mjs/g' $LLVM_BUILD/build.ninja
 
     # The mjs patching is over zealous, and patches some source JS files rather than just output files.
     # Undo that.
-    sed -i -E 's/(pre|post|proxyfs|fsroot)\.mjs/\1.js/g' $LLVM_BUILD/build.ninja
+    #sed -i -E 's/(pre|post|proxyfs|fsroot)\.mjs/\1.js/g' $LLVM_BUILD/build.ninja
 
     # Patch the build script to add the "llvm-box" target.
     # This new target bundles many executables in one, reducing the total size.
-    pushd $SRC
-    TMP_FILE=$(mktemp)
-    ./patch-ninja.sh \
-        $LLVM_BUILD/build.ninja \
-        llvm-box \
-        $BUILD/tooling \
-        clang lld llvm-objcopy \
-        > $TMP_FILE
-    cat $TMP_FILE >> $LLVM_BUILD/build.ninja
-    popd
-fi
-cmake --build $LLVM_BUILD/ -- llvm-box
+    #pushd $SRC
+    #TMP_FILE=$(mktemp)
+    #./patch-ninja.sh \
+    #    $LLVM_BUILD/build.ninja \
+    #    llvm-box \
+    #    $BUILD/tooling \
+    #    clang lld llvm-objcopy \
+    #    > $TMP_FILE
+    #cat $TMP_FILE >> $LLVM_BUILD/build.ninja
+    #popd
+#fi
+cmake --build $LLVM_BUILD/ -- clang
+#cmake --build $LLVM_BUILD/ -- llvm-box
