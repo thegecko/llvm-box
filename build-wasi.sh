@@ -39,7 +39,8 @@ LLVM_NATIVE=$BUILD/llvm-native
         -DLLVM_INCLUDE_TESTS=OFF \
         -DLLVM_TABLEGEN=$LLVM_NATIVE/bin/llvm-tblgen \
         -DCLANG_TABLEGEN=$LLVM_NATIVE/bin/clang-tblgen \
-        -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake
+        -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake \
+        -D_WASI_EMULATED_SIGNAL
 
     # Make sure we build js modules (.mjs).
     # The patch-ninja.sh script assumes that.
