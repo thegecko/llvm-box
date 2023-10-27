@@ -38,7 +38,7 @@ LLVM_NATIVE=$BUILD/llvm-native
         -DLLVM_INCLUDE_TESTS=OFF \
         -DLLVM_TABLEGEN=$LLVM_NATIVE/bin/llvm-tblgen \
         -DCLANG_TABLEGEN=$LLVM_NATIVE/bin/clang-tblgen \
-        -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake
+        -DCMAKE_TOOLCHAIN_FILE=$SRC/toolchain.cmake
 
     # Make sure we build js modules (.mjs).
     # The patch-ninja.sh script assumes that.
