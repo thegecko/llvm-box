@@ -18,10 +18,6 @@ BUILD=$(realpath "$BUILD")
 LLVM_BUILD=$BUILD/llvm
 LLVM_NATIVE=$BUILD/llvm-native
 
-CMAKE_C_FLAGS="$CMAKE_C_FLAGS -Dwait4=__syscall_wait4 -D_WASI_EMULATED_SIGNAL"
-CMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS -Dwait4=__syscall_wait4 -D_WASI_EMULATED_SIGNAL"
-CMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS -lwasi-emulated-signal"
-
 # Configure the main build, main point here is that the compiler targets the ARM platform,
 # Including ARM Embedded devices.
 #if [ ! -d $LLVM_BUILD/ ]; then
@@ -42,7 +38,7 @@ CMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS -lwasi-emulated-signal"
         -DLLVM_INCLUDE_TESTS=OFF \
         -DLLVM_TABLEGEN=$LLVM_NATIVE/bin/llvm-tblgen \
         -DCLANG_TABLEGEN=$LLVM_NATIVE/bin/clang-tblgen \
-        -DCMAKE_TOOLCHAIN_FILE=/usr/share/cmake/wasi-sdk-pthread.cmake
+        -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake
 
     # Make sure we build js modules (.mjs).
     # The patch-ninja.sh script assumes that.
