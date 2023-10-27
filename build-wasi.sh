@@ -18,9 +18,9 @@ BUILD=$(realpath "$BUILD")
 LLVM_BUILD=$BUILD/llvm
 LLVM_NATIVE=$BUILD/llvm-native
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Dwait4=__syscall_wait4 -D_WASI_EMULATED_SIGNAL")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dwait4=__syscall_wait4 -D_WASI_EMULATED_SIGNAL")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lwasi-emulated-signal")
+CMAKE_C_FLAGS="$CMAKE_C_FLAGS -Dwait4=__syscall_wait4 -D_WASI_EMULATED_SIGNAL"
+CMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS -Dwait4=__syscall_wait4 -D_WASI_EMULATED_SIGNAL"
+CMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS -lwasi-emulated-signal"
 
 # Configure the main build, main point here is that the compiler targets the ARM platform,
 # Including ARM Embedded devices.
