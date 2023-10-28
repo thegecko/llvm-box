@@ -1,4 +1,4 @@
-include(/usr/share/cmake/wasi-sdk-pthread.cmake)
+include(/usr/share/cmake/wasi-sdk.cmake)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_WASI_EMULATED_SIGNAL")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dwait4=__syscall_wait4 -D_WASI_EMULATED_SIGNAL")
