@@ -16,16 +16,17 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - name: Build
         run: |
-          ./build-with-docker.sh
+          ./build.sh
       - uses: actions/upload-artifact@v3
         with:
           name: dist
           path: |
-            ./build/llvm/bin/llvm-box.wasm
-            ./build/llvm/bin/llvm-box.mjs
+            ./build/llvm-wasi/bin/*.wasm
           retention-days: 7
 
   release:
