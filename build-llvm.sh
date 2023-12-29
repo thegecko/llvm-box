@@ -67,7 +67,7 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -B $LLVM_BUILD/ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DLLVM_TARGETS_TO_BUILD=ARM \
-        -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
+        -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" \
         -DLLVM_ENABLE_DUMP=OFF \
         -DLLVM_ENABLE_ASSERTIONS=OFF \
         -DLLVM_ENABLE_EXPENSIVE_CHECKS=OFF \
@@ -86,18 +86,5 @@ if [ ! -d $LLVM_BUILD/ ]; then
     # The mjs patching is over zealous, and patches some source JS files rather than just output files.
     # Undo that.
     sed -i -E 's/(pre|post|proxyfs|fsroot)\.mjs/\1.js/g' $LLVM_BUILD/build.ninja
-
-    # Patch the build script to add the "llvm-box" target.
-    # This new target bundles many executables in one, reducing the total size.
-    pushd $SRC
-    TMP_FILE=$(mktemp)
-    ./patch-ninja.sh \
-        $LLVM_BUILD/build.ninja \
-        llvm-box \
-        $BUILD/tooling \
-        clang lld llvm-objcopy \
-        > $TMP_FILE
-    cat $TMP_FILE >> $LLVM_BUILD/build.ninja
-    popd
 fi
-cmake --build $LLVM_BUILD/ -- llvm-box
+cmake --build $LLVM_BUILD/ --target clangd
