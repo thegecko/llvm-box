@@ -87,4 +87,4 @@ if [ ! -d $LLVM_BUILD/ ]; then
     # Undo that.
     sed -i -E 's/(pre|post|proxyfs|fsroot)\.mjs/\1.js/g' $LLVM_BUILD/build.ninja
 fi
-cmake --build $LLVM_BUILD/ --target clangd
+cmake --build $LLVM_BUILD/ -- clangd
