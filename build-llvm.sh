@@ -78,13 +78,5 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -DLLVM_INCLUDE_TESTS=OFF \
         -DLLVM_TABLEGEN=$LLVM_NATIVE/bin/llvm-tblgen \
         -DCLANG_TABLEGEN=$LLVM_NATIVE/bin/clang-tblgen
-
-    # Make sure we build js modules (.mjs).
-    # The patch-ninja.sh script assumes that.
-    sed -i -E 's/\.js/.mjs/g' $LLVM_BUILD/build.ninja
-
-    # The mjs patching is over zealous, and patches some source JS files rather than just output files.
-    # Undo that.
-    sed -i -E 's/(pre|post|proxyfs|fsroot)\.mjs/\1.js/g' $LLVM_BUILD/build.ninja
 fi
-cmake --build $LLVM_BUILD/ -- clangd
+cmake --build $LLVM_BUILD/ --target clangd
