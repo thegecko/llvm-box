@@ -66,7 +66,6 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
-        -DLLVM_TARGETS_TO_BUILD=ARM \
         -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" \
         -DLLVM_ENABLE_DUMP=OFF \
         -DLLVM_ENABLE_ASSERTIONS=OFF \
