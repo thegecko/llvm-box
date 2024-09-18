@@ -4,7 +4,7 @@ FROM emscripten/emsdk:3.1.67
 
 RUN DEBIAN_FRONTEND=noninteractive apt --no-install-recommends -qy update && \
     DEBIAN_FRONTEND=noninteractive apt --no-install-recommends -qy install \
-    clang-3.5 \
+    clang \
     docker.io \
     pkg-config \
     ninja-build \
