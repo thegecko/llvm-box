@@ -29,7 +29,7 @@ if [ ! -d $LLVM_SRC/ ]; then
     
     # This is the last tested commit of llvm-project.
     # Feel free to try with a newer version
-    COMMIT=d5a963ab8b40fcf7a99acd834e5f10a1a30cc2e5
+    COMMIT=a4bf6cd7cfb1a1421ba92bca9d017b49936c55e4
     git fetch origin $COMMIT
     git reset --hard $COMMIT
 
