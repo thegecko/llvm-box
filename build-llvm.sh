@@ -100,4 +100,4 @@ if [ ! -d $LLVM_BUILD/ ]; then
     popd
 
 fi
-cmake --build $LLVM_BUILD/ --target -- llvm-box
+cmake --build $LLVM_BUILD/ -- llvm-box
