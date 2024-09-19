@@ -1,9 +1,10 @@
 # This is the last tested version of emscripten.
 # Feel free to try with a newer version
-FROM emscripten/emsdk:3.1.24
+FROM emscripten/emsdk:3.1.67
 
 RUN DEBIAN_FRONTEND=noninteractive apt --no-install-recommends -qy update && \
     DEBIAN_FRONTEND=noninteractive apt --no-install-recommends -qy install \
+    clang \
     docker.io \
     pkg-config \
     ninja-build \
