@@ -24,8 +24,8 @@ jobs:
         with:
           name: dist
           path: |
-            ./build/llvm/bin/llvm-box.wasm
-            ./build/llvm/bin/llvm-box.mjs
+            ./build/llvm/bin/*.wasm
+            ./build/llvm/bin/*.mjs
           retention-days: 7
 
   release:

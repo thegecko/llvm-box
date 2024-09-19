@@ -29,7 +29,7 @@ if [ ! -d $LLVM_SRC/ ]; then
     
     # This is the last tested commit of llvm-project.
     # Feel free to try with a newer version
-    COMMIT=d5a963ab8b40fcf7a99acd834e5f10a1a30cc2e5
+    COMMIT=a4bf6cd7cfb1a1421ba92bca9d017b49936c55e4
     git fetch origin $COMMIT
     git reset --hard $COMMIT
 
@@ -78,26 +78,5 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -DLLVM_INCLUDE_TESTS=OFF \
         -DLLVM_TABLEGEN=$LLVM_NATIVE/bin/llvm-tblgen \
         -DCLANG_TABLEGEN=$LLVM_NATIVE/bin/clang-tblgen
-
-    # Make sure we build js modules (.mjs).
-    # The patch-ninja.sh script assumes that.
-    sed -i -E 's/\.js/.mjs/g' $LLVM_BUILD/build.ninja
-
-    # The mjs patching is over zealous, and patches some source JS files rather than just output files.
-    # Undo that.
-    sed -i -E 's/(pre|post|proxyfs|fsroot)\.mjs/\1.js/g' $LLVM_BUILD/build.ninja
-
-    # Patch the build script to add the "llvm-box" target.
-    # This new target bundles many executables in one, reducing the total size.
-    pushd $SRC
-    TMP_FILE=$(mktemp)
-    ./patch-ninja.sh \
-        $LLVM_BUILD/build.ninja \
-        llvm-box \
-        $BUILD/tooling \
-        clang lld llvm-objcopy \
-        > $TMP_FILE
-    cat $TMP_FILE >> $LLVM_BUILD/build.ninja
-    popd
 fi
-cmake --build $LLVM_BUILD/ -- llvm-box
+cmake --build $LLVM_BUILD/
