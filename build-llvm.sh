@@ -66,7 +66,8 @@ if [ ! -d $LLVM_BUILD/ ]; then
         -S $LLVM_SRC/llvm/ \
         -B $LLVM_BUILD/ \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
-        -DLLVM_ENABLE_PROJECTS="clang-tools-extra" \
+        -DLLVM_TARGETS_TO_BUILD=ARM \
+        -DLLVM_ENABLE_PROJECTS="clang;lld;clang-tools-extra" \
         -DLLVM_ENABLE_DUMP=OFF \
         -DLLVM_ENABLE_ASSERTIONS=OFF \
         -DLLVM_ENABLE_EXPENSIVE_CHECKS=OFF \
@@ -94,7 +95,7 @@ if [ ! -d $LLVM_BUILD/ ]; then
         $LLVM_BUILD/build.ninja \
         llvm-box \
         $BUILD/tooling \
-        clang lld llvm-objcopy \
+        clangd \
         > $TMP_FILE
     cat $TMP_FILE >> $LLVM_BUILD/build.ninja
     popd
